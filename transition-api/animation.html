@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>容器动画</title>
+    <style>
+      /* 容器a样式 */
+      .container-a {
+        width: 100vw;
+        position: relative;
+      }
+
+      /* 容器b样式 */
+      .container-b {
+        width: 100vw; /* 定义容器b的宽度 */
+        background-color: #3498db; /* 蓝色背景 */
+        animation: scaleAnimation 1.5s infinite alternate; 
+        z-index: 1;
+        position: absolute;
+      }
+      .container-c{
+        position: absolute;
+        width: 100vw; /* 定义容器b的宽度 */
+      }
+      img {
+        width: auto; /* 定义容器b的宽度 */
+      }
+
+      /* 放大缩小动画 */
+      @keyframes scaleAnimation {
+        0% {
+            clip-path: circle(0  at 200px 50px);
+          /* transform: scale(0); */
+        }
+        100% {
+            clip-path: circle(200%  at 200px 50px);
+          /* transform: scale(2); */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 容器a -->
+    <div class="container-a">
+      <!-- 容器b -->
+      <div class="container-b">
+        <img src="./dark.png" alt="" />
+      </div>
+      <div class="container-c">
+        <img src="./light.png" alt="" />
+      </div>
+    </div>
+  </body>
+</html>

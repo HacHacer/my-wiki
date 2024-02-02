@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      html.dark-theme {
+        background-color: black;
+        color: white;
+      }
+      html {
+        width: 100vw;
+        background-color: white;
+        color: black;
+        font-size: 30px;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
+
+    <div id="app">
+      <button @click="toggleDark">change</button>
+      {{ message }}
+      <span>text</span>
+    </div>
+
+    <script type="module">
+      import { createApp } from "vue";
+
+      createApp({
+        data() {
+          return {
+            message: "Hello Vue!",
+            isDark: false,
+          };
+        },
+        methods: {
+          changeMessage() {
+            this.message = "Hello Vue 3!";
+          },
+          toggleDark(event) {
+            // const isAppearanceTransition =
+            //   document.startViewTransition &&
+            //   !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            // if (!isAppearanceTransition || !event) {
+            //   this.isDark = !this.isDark;
+            //   document.body.classList.toggle("dark-theme");
+            //   return;
+            // }
+            const x = event.clientX;
+            const y = event.clientY;
+            const endRadius = Math.hypot(
+              Math.max(x, innerWidth - x),
+              Math.max(y, innerHeight - y)
+            );
+            // @ts-expect-error: Transition API
+            const transition = document.startViewTransition(async () => {
+              //   this.isDark = !this.isDark;
+              document.documentElement.classList.toggle("dark-theme");
+              await this.$nextTick();
+            });
+            transition.ready.then(() => {
+              const clipPath = [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`,
+              ];
+              const isDark = document.documentElement.classList.contains("dark-theme");
+              document.documentElement.animate(
+                {
+                  clipPath: isDark ? [...clipPath].reverse() : clipPath,
+                },
+                {
+                  duration: 1000,
+                  easing: "ease-in",
+                  pseudoElement: isDark
+                    ? "::view-transition-old(root)"
+                    : "::view-transition-new(root)",
+                }
+              );
+            });
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
