@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function loadScript(src) {
+            var script = document.createElement("script");
+            script.setAttribute("type", "text/javascript");
+            script.src = src;
+            document.body.appendChild(script);
+        } 
+
+        window.onload = function() {
+            loadScript("http://localhost:3000/api/jsonp?callback=foo");
+        };
+
+        function foo(data){
+            console.log('data :>> ', data);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3使用unpkg引入</title>
+  </head>
+  <body>
+    <!-- <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script> -->
+<style>
+  @keyframes identifier {
+    0%{
+      opacity: 1;
+    }
+   20%{
+      opacity: 0;
+    }
+  }
+  a{
+    animation: identifier 2s infinite;
+  }
+</style>
+    <div id="app"></div>
+<img src="" alt="">
+<br>
+<a href=""></a>
+<em></em>
+
+    <script type="module">
+      import {
+        createApp,
+        reactive,
+        computed,
+        onMounted,
+      } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+      // import { createApp, reactive, computed, onMounted } from "vue";
+
+      const App = {
+        template: `<div>count is {{state.message}}</div>`,
+        setup() {
+          var state = reactive({
+            message: 10,
+            double: computed(() => state.message * 2),
+          });
+          function increment() {
+            state.message++;
+          }
+          onMounted(() => {
+            console.log("Mounted");
+          });
+          return {
+            state,
+            increment,
+          };
+        },
+      };
+
+      const app = createApp(App);
+      console.log('app :>> ', app);
+      //   const components = Vue.component("chart", {});
+      //   app.component;
+      createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

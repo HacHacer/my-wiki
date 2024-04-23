@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3使用unpkg引入</title>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
+
+    <div id="app">
+      <div>
+        数值大小
+        <input type="range" @change="update" :value="state.numericalValue" />
+      </div>
+      <div v-for="item in 3">
+        <img src="../assets/logo.svg" />
+      </div>
+    </div>
+
+    <script type="module">
+      import { createApp, reactive, computed, onMounted } from "vue";
+
+      function debounce(fn, time) {
+        let timer = undefined;
+        return function (e) {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fn(e);
+          }, time);
+        };
+      }
+
+      const App = {
+        setup() {
+          var state = reactive({
+            message: 10,
+            type: "",
+            numericalValue: 0.1,
+          });
+          function increment() {
+            state.message++;
+          }
+          onMounted(() => {
+            console.log("Mounted");
+          });
+          const update = debounce((e) => {
+            console.log("e :>> ", e.target.value);
+          }, 1000);
+          return {
+            state,
+            increment,
+            update,
+          };
+        },
+      };
+
+      const app = createApp(App);
+      createApp(App).mount("#app");
+    </script>
+  </body>
+  <style>
+    img {
+      width: 200px;
+    }
+    #app {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #app > div {
+      margin: 40px;
+      border-radius: 10px;
+      border: 1px solid #1f1f1f;
+      filter: brightness(v-bind("state.numericalValue"));
+    }
+  </style>
+</html>
