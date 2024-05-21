@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/@antv/g/dist/index.umd.min.js"></script>
+    <!-- G 渲染器，支持 Canvas2D/SVG/WebGL -->
+    <script src="https://unpkg.com/@antv/g-canvas/dist/index.umd.min.js"></script>
+    <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+  </head>
+  <body>
+    <div id="container" />
+
+    <script>
+      // 从核心包中引入画布、Circle 等对象
+      const { Circle, Canvas, CanvasEvent, Text, Line } = window.G;
+
+      // 创建一个渲染器，这里使用 Canvas2D
+      const canvasRenderer = new window.G.Canvas2D.Renderer();
+
+      // 创建画布
+      const canvas = new Canvas({
+        container: "container",
+        width: 600,
+        height: 500,
+        renderer: canvasRenderer,
+      });
+
+      // 创建一个 Circle
+      const circle = new Circle({
+        style: {
+          r: 50,
+          fill: "#1890FF",
+          stroke: "#F04864",
+          lineWidth: 4,
+          cursor: "pointer",
+        },
+      });
+      const text1 = new Text({
+        style: {
+          text: "Node1", // 文本内容
+          fontFamily: "Avenir", // 字体
+          fontSize: 22, // 字号
+          fill: "#fff", // 文本颜色
+          textAlign: "center", // 水平居中
+          textBaseline: "middle", // 垂直居中
+        },
+      });
+      const edge = new Line({
+        style: {
+          x1: 200,
+          y1: 200,
+          x2: 400,
+          y2: 200,
+          stroke: "#1890FF",
+          lineWidth: 2,
+        },
+      });
+      const circle2 = new Circle({
+        style: {
+          r: 50,
+          fill: "#1890FF",
+          stroke: "#F04864",
+          lineWidth: 4,
+          cursor: "pointer",
+        },
+      });
+      const text2 = new Text({
+        style: {
+          text: "Node2", // 文本内容
+          fontFamily: "Avenir", // 字体
+          fontSize: 22, // 字号
+          fill: "#fff", // 文本颜色
+          textAlign: "center", // 水平居中
+          textBaseline: "middle", // 垂直居中
+        },
+      });
+      circle.appendChild(text1);
+      circle.setPosition(200, 200);
+      circle2.appendChild(text2);
+      circle2.setPosition(400, 200);
+
+      circle.addEventListener("mouseenter", () => {
+        // 修改图形样式属性
+        circle.style.fill = "red";
+      });
+      circle.addEventListener("mouseleave", () => {
+        // 修改图形样式属性
+        circle.style.fill = "#1890FF";
+      });
+
+      // 等待画布初始化完成
+      canvas.addEventListener(CanvasEvent.READY, () => {
+        // 向画布中加入 Circle
+        canvas.appendChild(edge);
+        canvas.appendChild(circle);
+        canvas.appendChild(circle2);
+        interact(circle, {
+          // 直接传入节点1
+          context: canvas.document, // 传入上下文
+        }).draggable({
+          onmove: function (event) {
+            // interact.js 告诉我们的偏移量
+            const { dx, dy } = event;
+            // 改变节点1位置
+            circle.translateLocal(dx, dy);
+            // 获取节点1位置
+            const [nx, ny] = circle.getLocalPosition();
+            // 改变边的端点位置
+            edge.style.x1 = nx;
+            edge.style.y1 = ny;
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
