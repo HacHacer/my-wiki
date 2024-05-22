@@ -1,0 +1,9 @@
+{
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  },
+  "scripts": {
+    "dev":"npx tailwindcss -i main.css -o dist/main.css --watch "
+  }
+}
